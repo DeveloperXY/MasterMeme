@@ -8,4 +8,6 @@ android {
 }
 
 dependencies {
+    implementation(libs.core.splashscreen)
+    implementation(projects.core.ui)
 }

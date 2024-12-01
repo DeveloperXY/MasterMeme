@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.master.meme.android.library)
+    alias(libs.plugins.master.meme.android.library.compose)
 }
 
 android {
@@ -7,4 +8,6 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.material3)
 }
