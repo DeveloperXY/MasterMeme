@@ -8,6 +8,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.splashscreen)
     implementation(projects.core.ui)
+    implementation(projects.yourmemes)
+    implementation(projects.memeeditor)
+    implementation(libs.core.splashscreen)
 }
