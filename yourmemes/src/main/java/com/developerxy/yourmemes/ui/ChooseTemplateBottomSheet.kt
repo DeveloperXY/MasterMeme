@@ -1,6 +1,11 @@
 package com.developerxy.yourmemes.ui
 
+import androidx.compose.animation.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,15 +15,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,7 +46,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.developerxy.ui.theme.AppTypography
-import com.developerxy.yourmemes.ui.components.ClickToExpandSearchBar
+import com.developerxy.ui.theme.surface
+import com.developerxy.ui.theme.surfaceContainer
+import com.developerxy.yourmemes.ui.components.CircularRevealAnimation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,42 +71,116 @@ fun ChooseTemplateBottomSheet(
                 .fillMaxSize()
                 .padding(horizontal = 16.dp),
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (!isSearching) {
-                    Column(modifier = Modifier
-                        .wrapContentHeight()
-                        .weight(1f)) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Choose template",
-                            style = AppTypography.headlineSmall.copy(
-                                color = Color(0xFFE6E0E9)
-                            )
-                        )
-                        Spacer(Modifier.height(12.dp))
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Choose template for your next meme masterpiece",
-                            style = AppTypography.labelSmall.copy(
-                                color = Color.White
-                            )
-                        )
-                    }
+            CircularRevealAnimation(
+                revealPercentTarget = if (isSearching) 1f else 0f,
+                startContent = {
+                    ChooseTemplateHeader(
+                        onSearchClicked = {
+                            isSearching = true
+                        }
+                    )
+                },
+                endContent = {
+                    MemeTemplateSearchBar(
+                        onHide = {
+                            isSearching = false
+                        }
+                    )
                 }
+            )
 
-                ClickToExpandSearchBar(
-                    isSearching = isSearching,
-                    onToggleSearch = { isSearching = !isSearching }
-                )
-            }
             Spacer(Modifier.height(42.dp))
             MemeTemplatesGrid()
         }
     }
+}
+
+@Composable
+fun ChooseTemplateHeader(
+    modifier: Modifier = Modifier,
+    onSearchClicked: () -> Unit
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = Modifier
+                .wrapContentHeight()
+                .weight(1f)
+        ) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Choose template",
+                style = AppTypography.headlineSmall.copy(
+                    color = Color(0xFFE6E0E9)
+                )
+            )
+            Spacer(Modifier.height(12.dp))
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Choose template for your next meme masterpiece",
+                style = AppTypography.labelSmall.copy(
+                    color = Color.White
+                )
+            )
+        }
+
+        IconButton(onClick = onSearchClicked) {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Search",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+@Composable
+fun MemeTemplateSearchBar(
+    modifier: Modifier = Modifier,
+    onHide: () -> Unit
+) {
+    val color = remember { Animatable(surface) }
+    LaunchedEffect(Unit) {
+        color.animateTo(
+            surfaceContainer,
+            animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
+        )
+    }
+
+    TextField(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(color.value),
+        leadingIcon = {
+            Icon(
+                modifier = Modifier
+                    .requiredSize(16.dp)
+                    .clickable {
+                        onHide()
+                    },
+                imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                contentDescription = "Hide search field",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        },
+        value = "",
+        onValueChange = {},
+        placeholder = {
+            Text(
+                text = "Search for template...",
+                style = AppTypography.labelMedium.copy(
+                    color = Color(0xFF444347)
+                )
+            )
+        },
+        colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = Color.Transparent,
+            focusedContainerColor = Color.Transparent,
+            unfocusedIndicatorColor = Color(0xFF38343D)
+        )
+    )
 }
 
 @Composable
