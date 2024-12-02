@@ -65,6 +65,12 @@ val AppTypography = Typography(
     labelMedium = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = Manrope,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp
     ),
     headlineMedium = TextStyle(
         fontFamily = Manrope,

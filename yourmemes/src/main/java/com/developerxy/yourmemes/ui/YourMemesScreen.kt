@@ -16,6 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,8 +31,11 @@ import com.developerxy.ui.theme.AppTypography
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun YourMemesScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onAction: (YourMemesAction) -> Unit
 ) {
+    var showTemplateChooser by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -46,7 +53,10 @@ fun YourMemesScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
+            FloatingActionButton(onClick = {
+                showTemplateChooser = true
+                onAction(YourMemesAction.OnCreateNewMeme)
+            }) {
                 Icon(
                     painter = painterResource(com.developerxy.ui.R.drawable.baseline_add_24),
                     contentDescription = "Create new meme",
@@ -76,6 +86,12 @@ fun YourMemesScreen(
                     )
                 )
             }
+        }
+
+        if (showTemplateChooser) {
+            ChooseTemplateBottomSheet(
+                onHidden = { showTemplateChooser = false }
+            )
         }
     }
 }
