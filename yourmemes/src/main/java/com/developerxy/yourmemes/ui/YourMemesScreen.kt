@@ -27,11 +27,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.developerxy.ui.MasterMemeIcons
 import com.developerxy.ui.theme.AppTypography
+import com.developerxy.yourmemes.ui.components.templatechooser.ChooseTemplateBottomSheet
+import com.developerxy.yourmemes.ui.model.MemeTemplate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun YourMemesScreen(
     modifier: Modifier = Modifier,
+    memeTemplates: List<MemeTemplate>,
     onAction: (YourMemesAction) -> Unit
 ) {
     var showTemplateChooser by remember { mutableStateOf(false) }
@@ -90,6 +93,7 @@ fun YourMemesScreen(
 
         if (showTemplateChooser) {
             ChooseTemplateBottomSheet(
+                memeTemplates = memeTemplates,
                 onHidden = { showTemplateChooser = false }
             )
         }
