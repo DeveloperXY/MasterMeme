@@ -14,6 +14,7 @@ navgiationCompose = "2.8.4"
 splashScreen = "1.0.1"
 koin-bom = "4.0.0"
 jetbrainsKotlinJvm = "2.1.0"
+kotlinSerializationJson = "1.7.3"
 
 # Project versions
 projectApplicationId = "com.developerxy.mastermeme"
@@ -52,12 +53,15 @@ koin-android = { module = "io.insert-koin:koin-android" }
 koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
 
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerializationJson" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 master-meme-android-feature = { id = "master.meme.android.feature", version = "unspecified" }
 master-meme-android-library = { id = "master.meme.android.library", version = "unspecified" }

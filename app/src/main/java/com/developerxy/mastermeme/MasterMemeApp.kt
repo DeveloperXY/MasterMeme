@@ -1,6 +1,7 @@
 package com.developerxy.mastermeme
 
 import android.app.Application
+import com.developerxy.memeeditor.di.memeEditorModule
 import com.developerxy.yourmemes.di.yourMemesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -14,7 +15,7 @@ class MasterMemeApp : Application() {
             androidContext(this@MasterMemeApp)
             androidLogger()
 
-            modules(yourMemesModule)
+            modules(yourMemesModule, memeEditorModule)
         }
     }
 }

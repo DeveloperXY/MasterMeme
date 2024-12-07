@@ -14,7 +14,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         target.run {
             applyPlugins(
                 "android-application",
-                "kotlin-android",
+                "kotlin-android"
             )
 
             extensions.configure<ApplicationExtension> {

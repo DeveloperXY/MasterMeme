@@ -6,14 +6,23 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.developerxy.yourmemes.ui.YourMemesScreen
 import com.developerxy.yourmemes.ui.YourMemesViewModel
+import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
-fun NavGraphBuilder.yourMemesScreen() {
-    composable("your_memes") {
+@Serializable
+object YourMemesDestination
+
+fun NavGraphBuilder.yourMemesScreen(
+    onTemplateSelected: (resourcePath: String) -> Unit
+) {
+    composable<YourMemesDestination> {
         val viewModel = koinViewModel<YourMemesViewModel>()
         val memeTemplates by viewModel.memeTemplates.collectAsStateWithLifecycle()
         YourMemesScreen(
             onAction = viewModel::onAction,
+            onTemplateSelected = {
+                onTemplateSelected(it.resourcePath)
+            },
             memeTemplates = memeTemplates
         )
     }

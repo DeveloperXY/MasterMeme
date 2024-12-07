@@ -35,6 +35,7 @@ import com.developerxy.yourmemes.ui.model.MemeTemplate
 fun YourMemesScreen(
     modifier: Modifier = Modifier,
     memeTemplates: List<MemeTemplate>,
+    onTemplateSelected: (template: MemeTemplate) -> Unit,
     onAction: (YourMemesAction) -> Unit
 ) {
     var showTemplateChooser by remember { mutableStateOf(false) }
@@ -94,7 +95,8 @@ fun YourMemesScreen(
         if (showTemplateChooser) {
             ChooseTemplateBottomSheet(
                 memeTemplates = memeTemplates,
-                onHidden = { showTemplateChooser = false }
+                onHidden = { showTemplateChooser = false },
+                onMemeTemplateSelected = onTemplateSelected
             )
         }
     }

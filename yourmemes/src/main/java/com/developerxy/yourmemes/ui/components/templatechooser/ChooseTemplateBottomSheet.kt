@@ -12,18 +12,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.developerxy.yourmemes.ui.components.CircularRevealAnimation
 import com.developerxy.yourmemes.ui.model.MemeTemplate
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseTemplateBottomSheet(
     modifier: Modifier = Modifier,
     memeTemplates: List<MemeTemplate>,
-    onHidden: () -> Unit
+    onHidden: () -> Unit,
+    onMemeTemplateSelected: (template: MemeTemplate) -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = false
@@ -33,6 +37,7 @@ fun ChooseTemplateBottomSheet(
     val filteredTemplates = remember(query) {
         memeTemplates.filter { it.name.contains(query, ignoreCase = true) }
     }
+    val scope = rememberCoroutineScope()
 
     ModalBottomSheet(
         modifier = modifier,
@@ -65,7 +70,17 @@ fun ChooseTemplateBottomSheet(
             )
 
             Spacer(Modifier.height(42.dp))
-            MemeTemplatesGrid(templates = if (isSearching) filteredTemplates else memeTemplates)
+            MemeTemplatesGrid(
+                templates = if (isSearching) filteredTemplates else memeTemplates,
+                onTemplateSelected = {
+                    scope.launch {
+                        sheetState.hide()
+                        delay(100)
+                        onHidden()
+                        onMemeTemplateSelected(it)
+                    }
+                }
+            )
         }
     }
 }
