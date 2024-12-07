@@ -19,6 +19,10 @@ fun MasterMemeNavigation(navController: NavHostController) {
                 navController.navigate(MemeEditorDestination(templateResourcePath = it))
             }
         )
-        memeEditorScreen()
+        memeEditorScreen(
+            onBack = {
+                navController.popBackStack()
+            }
+        )
     }
 }

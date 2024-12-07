@@ -1,4 +1,4 @@
-package com.developerxy.yourmemes.ui.util
+package com.developerxy.ui.util
 
 import android.content.Context
 import android.graphics.Bitmap

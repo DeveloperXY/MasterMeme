@@ -20,7 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.developerxy.yourmemes.ui.model.MemeTemplate
-import com.developerxy.yourmemes.ui.util.loadBitmapFromUri
+import com.developerxy.ui.util.loadBitmapFromUri
 
 @Composable
 fun MemeTemplatesGrid(
