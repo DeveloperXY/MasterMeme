@@ -1,5 +1,7 @@
 package com.developerxy.memeeditor.navigation
 
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
@@ -16,7 +18,9 @@ fun NavGraphBuilder.memeEditorScreen(
 ) {
     composable<MemeEditorDestination> {
         val viewModel = koinViewModel<MemeEditorViewModel>()
+        val editorState by viewModel.editorState.collectAsStateWithLifecycle()
         MemeEditorScreen(
+            editorState = editorState,
             selectedTemplateResourcePath = it.toRoute<MemeEditorDestination>().templateResourcePath,
             onNavigateBack = onBack
         )
